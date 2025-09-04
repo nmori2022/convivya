@@ -65,7 +65,7 @@
     <div class="container-fluid p-0">
       <div class="row g-0">
         <% if user_signed_in? %>
-          <aside id="sidebar" class="col-lg-3 col-xl-2 sidebar border-end">
+          <aside id="sidebar" class="col-lg-3 col-xl-2 sidebar border-end collapse d-lg-block">
             <div class="sidebar-menu py-3">
               <% MenuItem.all.each do |item| %>
                 <%= link_to item.path, class: "menu-item #{item.style_class}" do %>
