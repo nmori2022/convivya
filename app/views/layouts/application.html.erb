@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Convivya" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "prototipo", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+      <div class="container-fluid">
+        <div class="d-flex align-items-center">
+          <button class="navbar-toggler me-3 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="logo-container me-2"><i class="fas fa-building text-white"></i></div>
+          <span class="navbar-brand mb-0">BuildingPro</span>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <% if user_signed_in? %>
+            <div class="dropdown">
+              <button class="btn btn-link text-white dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-user-circle me-2"></i><%= current_user.name || current_user.email %>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><%= link_to raw('<i class="fas fa-user me-2"></i>Perfil'), '#', class: "dropdown-item" %></li>
+                <li><%= link_to raw('<i class="fas fa-cog me-2"></i>Configuración'), '#', class: "dropdown-item" %></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <%= link_to raw('<i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión'),
+                      destroy_user_session_path,
+                      data: { turbo_method: :delete },
+                      class: "dropdown-item text-danger" %>
+                </li>
+              </ul>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid p-0">
+      <div class="row g-0">
+        <% if user_signed_in? %>
+          <aside id="sidebar" class="col-lg-3 col-xl-2 sidebar border-end">
+            <div class="sidebar-menu py-3">
+              <% MenuItem.all.each do |item| %>
+                <%= link_to item.path, class: "menu-item #{item.style_class}" do %>
+                  <i class="<%= item.icon_class %> me-2"></i>
+                  <span class="menu-text"><%= item.name %></span>
+                <% end %>
+              <% end %>
+            </div>
+          </aside>
+        <% end %>
+
+        <main class="<%= user_signed_in? ? 'col-lg-9 col-xl-10' : 'col-12' %>">
+          <div class="main-content">
+            <%= yield %>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
