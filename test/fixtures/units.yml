@@ -1,0 +1,63 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  condominium: one
+  tower: one
+  unit_type: one
+  code: MyString
+  number: MyString
+  surface_m2: 9.99
+  bedrooms: 1
+  bathrooms: 9.99
+  status: 1
+  rent_cents: 1
+  owner_name: MyString
+  phone: MyString
+  email: MyString
+  floor: 1
+  orientation: 1
+  description: MyText
+  feature_balcony: false
+  feature_terrace: false
+  feature_garden: false
+  feature_fireplace: false
+  feature_parking: false
+  feature_storage: false
+  feature_ac: false
+  feature_furnished: false
+  address_line: MyString
+  postal_code: MyString
+  region: one
+  city: one
+  commune: one
+
+two:
+  condominium: two
+  tower: two
+  unit_type: two
+  code: MyString
+  number: MyString
+  surface_m2: 9.99
+  bedrooms: 1
+  bathrooms: 9.99
+  status: 1
+  rent_cents: 1
+  owner_name: MyString
+  phone: MyString
+  email: MyString
+  floor: 1
+  orientation: 1
+  description: MyText
+  feature_balcony: false
+  feature_terrace: false
+  feature_garden: false
+  feature_fireplace: false
+  feature_parking: false
+  feature_storage: false
+  feature_ac: false
+  feature_furnished: false
+  address_line: MyString
+  postal_code: MyString
+  region: two
+  city: two
+  commune: two

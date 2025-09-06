@@ -29,18 +29,28 @@ class Ability
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/blob/develop/docs/define_check_abilities.md
   
-    user ||= User.new
+    # user ||= User.new
 
-    if user.persisted?
-      user.roles.includes(:permissions).each do |role|
-        role.permissions.each do |p|
-          can p.action.to_sym, p.subject_class.safe_constantize || :all
-        end
-      end
+    # if user.persisted?
+    #   user.roles.includes(:permissions).each do |role|
+    #     role.permissions.each do |p|
+    #       can p.action.to_sym, p.subject_class.safe_constantize || :all
+    #     end
+    #   end
+    # else
+    #   # Invitado (si quieres algo)
+    #   # can :read, :all
+    # end
+    
+    user ||= User.new # invitado
+
+
+    if user.has_role?(:admin)
+      can :manage, :all
     else
-      # Invitado (si quieres algo)
-      # can :read, :all
+      # Ajustar según roles adicionales (conserje, residente, etc.)
+      can :read, Condominium
+      can :read, Unit
     end
-  
   end
 end

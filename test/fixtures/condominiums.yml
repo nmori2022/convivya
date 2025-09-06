@@ -1,0 +1,41 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  name: MyString
+  address_line: MyString
+  postal_code: MyString
+  condo_kind: 1
+  status: 1
+  phone: MyString
+  email: MyString
+  description: MyText
+  declared_units: 1
+  administrator: one
+  region: one
+  city: one
+  commune: one
+  latitude: 9.99
+  longitude: 9.99
+  towers_count: 1
+  units_count: 1
+
+two:
+  code: MyString
+  name: MyString
+  address_line: MyString
+  postal_code: MyString
+  condo_kind: 1
+  status: 1
+  phone: MyString
+  email: MyString
+  description: MyText
+  declared_units: 1
+  administrator: two
+  region: two
+  city: two
+  commune: two
+  latitude: 9.99
+  longitude: 9.99
+  towers_count: 1
+  units_count: 1

@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  condominium: one
+  code: MyString
+  name: MyString
+  floors: 1
+  address_line: MyString
+  postal_code: MyString
+  region: one
+  city: one
+  commune: one
+  latitude: 9.99
+  longitude: 9.99
+  description: MyText
+  units_count: 1
+
+two:
+  condominium: two
+  code: MyString
+  name: MyString
+  floors: 1
+  address_line: MyString
+  postal_code: MyString
+  region: two
+  city: two
+  commune: two
+  latitude: 9.99
+  longitude: 9.99
+  description: MyText
+  units_count: 1

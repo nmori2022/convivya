@@ -14,3 +14,9 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym "RESTful"
 # end
+
+# NMori 20250905 se agregó esto por que al generar el modelo de datos para "condominium" 
+# el modelo lo generaba como Condominia y debe ser Condominiums
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.irregular 'condominium', 'condominiums'
+end
