@@ -14,9 +14,9 @@ class Condominium < ApplicationRecord
   has_many :units, dependent: :destroy
 
 
-  # Catálogos
-  enum condo_kind: { conjunto_casas: 0, edificio: 1, mixto: 2 }
-  enum status: { activo: 0, mantenimiento: 1, inactivo: 2 }
+  # Catálogos (usa la sintaxis posicional para evitar el ArgumentError)
+  enum :condo_kind, { conjunto_casas: 0, edificio: 1, mixto: 2 }
+  enum :status,     { activo: 0, mantenimiento: 1, inactivo: 2 }
 
 
   # Validaciones

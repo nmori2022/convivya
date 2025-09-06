@@ -62,6 +62,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_06_000223) do
     t.index ["region_id"], name: "index_condominiums_on_region_id"
   end
 
+  create_table "menu_item_permissions", force: :cascade do |t|
+    t.bigint "menu_item_id", null: false
+    t.bigint "permission_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["menu_item_id", "permission_id"], name: "idx_mip_on_item_and_permission", unique: true
+    t.index ["menu_item_id"], name: "index_menu_item_permissions_on_menu_item_id"
+    t.index ["permission_id"], name: "index_menu_item_permissions_on_permission_id"
+  end
+
+  create_table "menu_item_roles", force: :cascade do |t|
+    t.bigint "menu_item_id", null: false
+    t.bigint "role_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["menu_item_id", "role_id"], name: "idx_mir_on_item_and_role", unique: true
+    t.index ["menu_item_id"], name: "index_menu_item_roles_on_menu_item_id"
+    t.index ["role_id"], name: "index_menu_item_roles_on_role_id"
+  end
+
   create_table "menu_items", force: :cascade do |t|
     t.string "name"
     t.string "path"
@@ -207,6 +227,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_06_000223) do
   add_foreign_key "condominiums", "communes"
   add_foreign_key "condominiums", "regions"
   add_foreign_key "condominiums", "users", column: "administrator_id"
+  add_foreign_key "menu_item_permissions", "menu_items"
+  add_foreign_key "menu_item_permissions", "permissions"
+  add_foreign_key "menu_item_roles", "menu_items"
+  add_foreign_key "menu_item_roles", "roles"
   add_foreign_key "towers", "cities"
   add_foreign_key "towers", "communes"
   add_foreign_key "towers", "condominiums"

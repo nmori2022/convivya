@@ -1,0 +1,108 @@
+*** Begin Patch
+*** Add File: app/models/menu_item.rb
++class MenuItem < ApplicationRecord
++ has_many :menu_item_permissions, dependent: :destroy
++ has_many :permissions, through: :menu_item_permissions
++
++ has_many :menu_item_roles, dependent: :destroy
++ has_many :roles, through: :menu_item_roles
++
++ validates :name, :path, presence: true
++ validates :position, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
++
++ scope :ordered, -> { order(:position, :id) }
++end
++
+*** End Patch
+
+*** Begin Patch
+*** Add File: app/models/menu_item_permission.rb
++class MenuItemPermission < ApplicationRecord
++ belongs_to :menu_item
++ belongs_to :permission
++
++ validates :menu_item_id, uniqueness: { scope: :permission_id }
++end
++
+*** End Patch
+
+*** Begin Patch
+*** Add File: app/models/menu_item_role.rb
++class MenuItemRole < ApplicationRecord
++ belongs_to :menu_item
++ belongs_to :role
++
++ validates :menu_item_id, uniqueness: { scope: :role_id }
++end
++
+*** End Patch
+
+*** Begin Patch
+*** Update File: app/models/permission.rb
+@@
+-class Permission < ApplicationRecord
+- has_and_belongs_to_many :roles
+- validates :action, :subject_class, presence: true
+-end
++class Permission < ApplicationRecord
++ has_and_belongs_to_many :roles
++
++ has_many :menu_item_permissions, dependent: :destroy
++ has_many :menu_items, through: :menu_item_permissions
++
++ validates :action, :subject_class, presence: true
++end
+*** End Patch
+
+*** Begin Patch
+*** Update File: app/models/role.rb
+@@
+class Role < ApplicationRecord
+- has_and_belongs_to_many :users, join_table: :users_roles
+- belongs_to :resource, polymorphic: true, optional: true
+- validates :name, presence: true
+- scopify
++ has_and_belongs_to_many :users, join_table: :users_roles
++ # Necesario para el seed que asigna permisos a roles
++ has_and_belongs_to_many :permissions
++
++ has_many :menu_item_roles, dependent: :destroy
++ has_many :menu_items, through: :menu_item_roles
++
++ belongs_to :resource, polymorphic: true, optional: true
++ validates :name, presence: true
++ scopify
+end
+*** End Patch
+
+*** Begin Patch
+*** Add File: db/migrate/20250906030101_create_menu_item_permissions.rb
++class CreateMenuItemPermissions < ActiveRecord::Migration[8.0]
++ def change
++ create_table :menu_item_permissions do |t|
++ t.references :menu_item, null: false, foreign_key: true
++ t.references :permission, null: false, foreign_key: true
++ t.timestamps
++ end
++ add_index :menu_item_permissions, [:menu_item_id, :permission_id],
++ unique: true, name: "idx_mip_on_item_and_permission"
++ end
++end
++
+*** End Patch
+
+*** Begin Patch
+*** Add File: db/migrate/20250906030102_create_menu_item_roles.rb
++class CreateMenuItemRoles < ActiveRecord::Migration[8.0]
++ def change
++ create_table :menu_item_roles do |t|
++ t.references :menu_item, null: false, foreign_key: true
++ t.references :role, null: false, foreign_key: true
++ t.timestamps
++ end
++ add_index :menu_item_roles, [:menu_item_id, :role_id],
++ unique: true, name: "idx_mir_on_item_and_role"
++ end
++end
++
+*** End Patch
