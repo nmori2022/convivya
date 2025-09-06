@@ -7,7 +7,8 @@
 # end
 class User < ApplicationRecord
   # Autenticación y recuperación con Devise
-  devise :database_authenticatable, :recoverable, :rememberable, :validatable, :trackable
+  devise :database_authenticatable, :registerable, 
+          :recoverable, :rememberable, :validatable, :trackable
 
 
   # Roles con Rolify
