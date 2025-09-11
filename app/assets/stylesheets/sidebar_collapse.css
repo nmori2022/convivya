@@ -1,0 +1,29 @@
+:root {
+    --sb-expanded: 280px;
+    --sb-collapsed: 72px;
+    --border-gray: #e2e8f0;
+    --light-blue: #dbeafe;
+    --primary-blue: #3b82f6;
+}
+
+/* Ancho visual (opcional si usas grid). Lo dejo por la animación suave. */
+#sidebar {
+    transition: all .2s ease;
+}
+
+#content-col {
+    transition: all .2s ease;
+}
+
+/* Oculta textos y centra iconos cuando está colapsado */
+#sidebar.is-collapsed .menu-text {
+    display: none !important;
+}
+
+#sidebar.is-collapsed .menu-item {
+    justify-content: center;
+}
+
+#sidebar.is-collapsed .menu-item i {
+    margin-right: 0 !important;
+}
