@@ -140,8 +140,9 @@ body {
     transition: opacity .18s ease, transform .18s ease;
 }
 
+/* COMENTAR O ELIMINAR ESTAS LÍNEAS en prototipo.css */
 /* --- Sidebar collapse (Convivya) --- */
-#sidebar.is-collapsed .menu-text {
+/*#sidebar.is-collapsed .menu-text {
     display: none !important;
 }
 
@@ -153,11 +154,16 @@ body {
     margin-right: 0 !important;
 }
 
+*/
+
+/* COMENTAR O ELIMINAR ESTAS LÍNEAS en prototipo.css */
 /* Opcional: si quieres animación visual del ancho (no afecta la grid) */
-#sidebar {
+/*#sidebar {
     transition: all .2s ease;
 }
 
 #content-col {
     transition: all .2s ease;
 }
+
+*/

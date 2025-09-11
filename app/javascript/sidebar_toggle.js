@@ -2,6 +2,7 @@
 // - Aplica/remueve "is-collapsed" (para ocultar textos)
 // - Cambia clases de grid en <aside id="sidebar"> y <main id="content-col">
 // - Persiste estado en localStorage
+
 document.addEventListener("turbo:load", initSidebarToggle);
 document.addEventListener("DOMContentLoaded", initSidebarToggle);
 
@@ -10,7 +11,14 @@ function initSidebarToggle() {
     const main = document.getElementById("content-col");
     const btn = document.getElementById("sidebarToggleBtn");
     const icon = document.getElementById("sidebarToggleIcon");
-    if (!sidebar || !btn) return;
+
+    // Debug: verificar que los elementos existen
+    console.log("Sidebar toggle init:", { sidebar, main, btn, icon });
+
+    if (!sidebar || !btn) {
+        console.warn("Sidebar o botón no encontrados");
+        return;
+    }
 
     const STORAGE_KEY = "ui:sidebar:collapsed";
 
@@ -18,19 +26,26 @@ function initSidebarToggle() {
     const saved = localStorage.getItem(STORAGE_KEY) === "true";
     applyState({ sidebar, main, icon, collapsed: saved });
 
-    btn.addEventListener("click", () => {
+    // Event listener con debug
+    btn.addEventListener("click", (e) => {
+        console.log("Click en botón sidebar");
+        e.preventDefault();
+
         const nowCollapsed = !sidebar.classList.contains("is-collapsed");
+        console.log("Nuevo estado collapsed:", nowCollapsed);
+
         applyState({ sidebar, main, icon, collapsed: nowCollapsed });
         localStorage.setItem(STORAGE_KEY, String(nowCollapsed));
     });
 }
 
 function applyState({ sidebar, main, icon, collapsed }) {
+    console.log("Aplicando estado:", collapsed);
+
     // 1) Flag visual para ocultar textos
     sidebar.classList.toggle("is-collapsed", collapsed);
 
     // 2) Ajuste de columnas Bootstrap SOLO si el usuario está logueado
-    //    (tu layout usa col-lg-9/10 cuando user_signed_in?)
     if (!main) return;
 
     if (collapsed) {

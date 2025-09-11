@@ -11,15 +11,13 @@
     <!-- Bootstrap 5 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
 
-    
-
     <!-- Font Awesome 6 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <%#= tag.link rel="manifest", href: pwa_manifest_path(format: :json) %>
 
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
@@ -68,21 +66,18 @@
 
     <div class="container-fluid p-0">
       <div class="row g-0">
-
-
-
-
         <% if user_signed_in? %>
+          <!-- Sidebar con clases Bootstrap correctas -->
           <aside id="sidebar" class="col-lg-3 col-xl-2 sidebar border-end collapse d-lg-block">
-
-            <button id="sidebarToggleBtn"
-                    type="button"
-                    class="btn btn-light btn-sm d-none d-lg-inline-flex"
-                    aria-controls="sidebar"
-                    aria-label="Colapsar/expandir">
-              <i id="sidebarToggleIcon" class="fas fa-chevron-left"></i>
-            </button>
-
+            <div class="d-flex justify-content-end p-2">
+              <button id="sidebarToggleBtn"
+                      type="button"
+                      class="btn btn-light btn-sm d-none d-lg-inline-flex"
+                      aria-controls="sidebar"
+                      aria-label="Colapsar/expandir">
+                <i id="sidebarToggleIcon" class="fas fa-chevron-left"></i>
+              </button>
+            </div>
 
             <div class="sidebar-menu py-3">
               <% MenuItem.all.each do |item| %>
@@ -93,18 +88,97 @@
               <% end %>
             </div>
           </aside>
+
+          <!-- Main content con clases Bootstrap correctas -->
+          <main id="content-col" class="col-lg-9 col-xl-10">
+            <div class="main-content">
+              <%= yield %>
+            </div>
+          </main>
+        <% else %>
+          <main class="col-12">
+            <div class="main-content">
+              <%= yield %>
+            </div>
+          </main>
         <% end %>
-
-        <main id="content-col" class="<%= user_signed_in? ? 'col-lg-9 col-xl-10' : 'col-12' %>">
-
-          <div class="main-content">
-            <%= yield %>
-          </div>
-        </main>
       </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     
+    <!-- Sidebar Toggle JavaScript que funciona con Bootstrap Grid -->
+    <script>
+      document.addEventListener("turbo:load", initSidebarToggle);
+      document.addEventListener("DOMContentLoaded", initSidebarToggle);
+
+      function initSidebarToggle() {
+          const sidebar = document.getElementById("sidebar");
+          const main = document.getElementById("content-col");
+          const btn = document.getElementById("sidebarToggleBtn");
+          const icon = document.getElementById("sidebarToggleIcon");
+          
+          console.log("Sidebar toggle init:", { sidebar, main, btn, icon });
+          
+          if (!sidebar || !btn) {
+              console.warn("Sidebar o botón no encontrados");
+              return;
+          }
+
+          const STORAGE_KEY = "ui:sidebar:collapsed";
+
+          // Estado guardado
+          const saved = localStorage.getItem(STORAGE_KEY) === "true";
+          applyState({ sidebar, main, icon, collapsed: saved });
+
+          // Event listener
+          btn.addEventListener("click", (e) => {
+              console.log("Click en botón sidebar");
+              e.preventDefault();
+              
+              const nowCollapsed = !sidebar.classList.contains("is-collapsed");
+              console.log("Nuevo estado collapsed:", nowCollapsed);
+              
+              applyState({ sidebar, main, icon, collapsed: nowCollapsed });
+              localStorage.setItem(STORAGE_KEY, String(nowCollapsed));
+          });
+      }
+
+      function applyState({ sidebar, main, icon, collapsed }) {
+          console.log("Aplicando estado:", collapsed);
+          
+          // Toggle clase visual
+          sidebar.classList.toggle("is-collapsed", collapsed);
+
+          // Cambiar clases Bootstrap
+          if (collapsed) {
+              // Sidebar pequeño
+              sidebar.classList.remove("col-lg-3", "col-xl-2");
+              sidebar.classList.add("col-lg-1", "col-xl-1");
+              
+              // Main expandido
+              main.classList.remove("col-lg-9", "col-xl-10");
+              main.classList.add("col-lg-11", "col-xl-11");
+              
+              // Icono hacia la derecha
+              icon.classList.remove("fa-chevron-left");
+              icon.classList.add("fa-chevron-right");
+          } else {
+              // Sidebar normal
+              sidebar.classList.remove("col-lg-1", "col-xl-1");
+              sidebar.classList.add("col-lg-3", "col-xl-2");
+              
+              // Main normal
+              main.classList.remove("col-lg-11", "col-xl-11");
+              main.classList.add("col-lg-9", "col-xl-10");
+              
+              // Icono hacia la izquierda
+              icon.classList.remove("fa-chevron-right");
+              icon.classList.add("fa-chevron-left");
+          }
+          
+          sidebar.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      }
+    </script>
   </body>
 </html>
