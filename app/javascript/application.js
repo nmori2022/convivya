@@ -2,4 +2,6 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
-import "./sidebar_toggle.js"
+
+//import "./sidebar_toggle.js"
+import "sidebar_toggle"
